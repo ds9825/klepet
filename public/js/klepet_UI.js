@@ -12,6 +12,10 @@ function divElementHtmlTekst(sporocilo) {
   return $('<div></div>').html('<i>' + sporocilo + '</i>');
 }
 
+function divElementSlika(slika) {
+  return $('<div></div>').html('<img src="'+slika+'"; style=" width:200px; padding-left:20px">' );
+}
+
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
@@ -27,6 +31,7 @@ function procesirajVnosUporabnika(klepetApp, socket) {
     klepetApp.posljiSporocilo(trenutniKanal, sporocilo);
     $('#sporocila').append(divElementEnostavniTekst(sporocilo));
     $('#sporocila').scrollTop($('#sporocila').prop('scrollHeight'));
+    pokaziSliko(sporocilo);
   }
 
   $('#poslji-sporocilo').val('');
@@ -76,6 +81,7 @@ $(document).ready(function() {
   socket.on('sporocilo', function (sporocilo) {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
     $('#sporocila').append(novElement);
+    pokaziSliko(sporocilo.besedilo);
   });
   
   socket.on('kanali', function(kanali) {
@@ -138,4 +144,18 @@ function dodajSmeske(vhodnoBesedilo) {
       preslikovalnaTabela[smesko] + "' />");
   }
   return vhodnoBesedilo;
+<<<<<<< HEAD
 }
+=======
+}
+
+function pokaziSliko(slika) {
+  var t = slika.split(" ");
+  for (var a in t) {
+    var regex = new RegExp('^.*https?://.*\.(png|jpg|gif).*$', 'gi' );
+    if (regex.test(t[a])) {
+      $('#sporocila').append(divElementSlika(t[a]));
+    }
+  }
+}
+>>>>>>> slike

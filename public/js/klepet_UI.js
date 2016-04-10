@@ -12,6 +12,11 @@ function divElementHtmlTekst(sporocilo) {
   return $('<div></div>').html('<i>' + sporocilo + '</i>');
 }
 
+function divElementYTPosnetek(video) {
+  return $('<div style="padding-left:20px"></div>').html('<iframe src="https://www.youtube.com/embed/' + video + '" allowfullscreen style="width:200px; height:150px"> </iframe>');
+}
+
+
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
@@ -27,6 +32,7 @@ function procesirajVnosUporabnika(klepetApp, socket) {
     klepetApp.posljiSporocilo(trenutniKanal, sporocilo);
     $('#sporocila').append(divElementEnostavniTekst(sporocilo));
     $('#sporocila').scrollTop($('#sporocila').prop('scrollHeight'));
+    pokaziYTPosnetek(sporocilo);
   }
 
   $('#poslji-sporocilo').val('');
@@ -76,6 +82,7 @@ $(document).ready(function() {
   socket.on('sporocilo', function (sporocilo) {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
     $('#sporocila').append(novElement);
+    pokaziYTPosnetek(sporocilo.besedilo);
   });
   
   socket.on('kanali', function(kanali) {
@@ -130,4 +137,14 @@ function dodajSmeske(vhodnoBesedilo) {
       preslikovalnaTabela[smesko] + "' />");
   }
   return vhodnoBesedilo;
+}
+
+function pokaziYTPosnetek(video) {
+  var t = video.split(" ");
+    for(var a in t) {
+      var regex = /^(?:https?:\/\/)?(?:www\.)?(youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+      if(regex.test(t[a])) {
+        $('#sporocila').append(divElementYTPosnetek(t[a].split('v=')[1]));
+      }
+    }
 }

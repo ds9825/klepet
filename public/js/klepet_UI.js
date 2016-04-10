@@ -12,8 +12,13 @@ function divElementHtmlTekst(sporocilo) {
   return $('<div></div>').html('<i>' + sporocilo + '</i>');
 }
 
+
 function divElementSlika(slika) {
   return $('<div></div>').html('<img src="'+slika+'"; style=" width:200px; padding-left:20px">' );
+}
+
+function divElementYTPosnetek(video) {
+  return $('<div style="padding-left:20px"></div>').html('<iframe src="https://www.youtube.com/embed/' + video + '" allowfullscreen style="width:200px; height:150px"> </iframe>');
 }
 
 function procesirajVnosUporabnika(klepetApp, socket) {
@@ -32,6 +37,7 @@ function procesirajVnosUporabnika(klepetApp, socket) {
     $('#sporocila').append(divElementEnostavniTekst(sporocilo));
     $('#sporocila').scrollTop($('#sporocila').prop('scrollHeight'));
     pokaziSliko(sporocilo);
+    pokaziYTPosnetek(sporocilo);
   }
 
   $('#poslji-sporocilo').val('');
@@ -82,6 +88,7 @@ $(document).ready(function() {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
     $('#sporocila').append(novElement);
     pokaziSliko(sporocilo.besedilo);
+    pokaziYTPosnetek(sporocilo.besedilo);
   });
   
   socket.on('kanali', function(kanali) {
@@ -144,9 +151,6 @@ function dodajSmeske(vhodnoBesedilo) {
       preslikovalnaTabela[smesko] + "' />");
   }
   return vhodnoBesedilo;
-<<<<<<< HEAD
-}
-=======
 }
 
 function pokaziSliko(slika) {
@@ -158,4 +162,13 @@ function pokaziSliko(slika) {
     }
   }
 }
->>>>>>> slike
+
+function pokaziYTPosnetek(video) {
+  var t = video.split(" ");
+    for(var a in t) {
+      var regex = /^(?:https?:\/\/)?(?:www\.)?(youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+      if(regex.test(t[a])) {
+        $('#sporocila').append(divElementYTPosnetek(t[a].split('v=')[1]));
+      }
+    }
+}

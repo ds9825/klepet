@@ -99,7 +99,15 @@ $(document).ready(function() {
     for (var i=0; i < uporabniki.length; i++) {
       $('#seznam-uporabnikov').append(divElementEnostavniTekst(uporabniki[i]));
     }
+      $('#seznam-uporabnikov div').click(function() {
+        var prejemnik = $(this).text();
+        $('#poslji-sporocilo').val( '/zasebno "' + prejemnik + '"' );
+        $('#poslji-sporocilo').focus();
+      });
   });
+  
+ 
+  
 
   setInterval(function() {
     socket.emit('kanali');

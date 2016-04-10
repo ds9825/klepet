@@ -16,10 +16,6 @@ function divElementSlika(slika) {
   return $('<div></div>').html('<img src="'+slika+'"; style=" width:200px; padding-left:20px">' );
 }
 
-function divElementYTPosnetek(video) {
-  return $('<div></div>').html('<iframe src="https://www.youtube.com/embed/'+video+'" allowfullscreen; style="width:200px; height:150px; padding-left:20px"></iframe>')
-}
-
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
